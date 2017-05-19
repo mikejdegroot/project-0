@@ -35,6 +35,7 @@ $(() => {
     gameInit();
   });
 
+//initializes the building of the program array
   function gameInit () {
     for (let i = 0; i < currentRound; i++){
       console.log('initializing!');
@@ -42,8 +43,20 @@ $(() => {
       programSequence.push($sounds[rand]);
     }
     console.log(programSequence);
+    playBack();
   }
 
+
+// here does there need to be a game add random addition to array OR a way of using the above function just to add one?
+
+//this plays back the program array but all at once at the moment, needs time delay asap
+  function playBack () {
+    for (let i =0; i < programSequence.length; i++){
+      audio.src = `audio/${programSequence[i]}.wav`;
+      audio.play();
+      console.log(programSequence[i]);
+    }
+  }
 
 
 });
