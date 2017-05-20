@@ -62,17 +62,34 @@ $(() => {
       i++;
       if (i < currentRound) {
         playBack();
+      } else {
+        listen();
       }
     }, 2000);
-    listen();
   }
 
-  $document.keypress(function(e) {
-    // console.log(e.charCode);
+  //Function pushes key charcodes the user inputs to the userSequence array.
+  function listen() {
+    console.log('listening...');
+    $document.keypress(function(e) {
+      userSequence.push(e.charCode);
+      console.log(userSequence);
+      compareArrays();
+    });
+  }
 
-
-  });
-
+//compares the two arrays when the length matches the current round. at the moment converts the number to string using ==, which is not ideal but it works
+  function compareArrays() {
+    if (userSequence.length === programSequence.length){
+      for (let i = 0; i <programSequence.length; i++){
+        if (programSequence[i] == userSequence[i]){
+          console.log('win');
+        } else {
+          console.log('loose');
+        }
+      }
+    }
+  }
 
 
 
