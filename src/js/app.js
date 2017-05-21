@@ -13,7 +13,7 @@ $(() => {
   let currentRound = 3;
   let programSequence = [];
   let userSequence = [];
-  let compare = [];
+
 
 
   //Playing yes/ no switch
@@ -54,6 +54,8 @@ $(() => {
 
 
   function playBack() {
+    count = 0;
+    userSequence = [];
     setTimeout(function () {
       audio.src = `audio/${programSequence[timerid]}.wav`;
       audio.play();
@@ -64,6 +66,7 @@ $(() => {
 
         timerid = 0;
         console.log(programSequence);
+        return;
       }
     }, 1000);
   }
@@ -81,25 +84,60 @@ $(() => {
   //
   listen();
 
-
+  let losses = 0;
   let count  = 0;
-  // compares the two arrays when the length matches the current round. at the moment converts the number to string using ==, which is not ideal but it works
+  // compares the two arrays when the length matches the current round.
+  // not super sick,couldnt get it stop triggering on every keypress
+  //
   function compareArrays() {
-    console.log('yo'+count);
-
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i]);
     count += 1;
-    if (count === currentRound) {
+    if ((count === currentRound) && (losses === 0)){
       console.log(theSame);
       if (theSame === true) {
-        let rand = Math.floor(Math.random()*8);
+        const rand = Math.floor(Math.random()*8);
         programSequence.push($sounds[rand]);
         userSequence = [];
         count = 0;
         playBack();
         currentRound += 1;
+      } else if (theSame === false) {
+        console.log('sudden death!');
+        count = 0;
+        losses += 1;
+        playBack();
+        // suddenDeath();
+
+      }
+    } else if ((count === currentRound) && (losses !== 0)){
+      if (theSame === true) {
+        console.log('winner winner!');
+      } else if (theSame === false) {
+        console.log('tie');
       }
     }
   }
+  // function suddenDeath() {
+  //   const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i]);
+  //   count += 1;
+  //   if ((count === currentRound) && (losses !== 0)){
+  //     console.log(theSame);
+  //     if (theSame === true) {
+  //       console.log('player 2 wins!');
+  //       count = 0;
+  //       currentRound += 1;
+  //       return;
+  //     } else if (theSame === false) {
+  //       console.log('tie');
+  //       count = 0;
+  //
+  //
+  //     }
+  //   }
+  //
+  //
+  //
+  // }
+
 
 });
