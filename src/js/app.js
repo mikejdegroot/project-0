@@ -78,17 +78,7 @@ $(() => {
   //assigns the audio src according to keypress id of keys 1-8.
   $document.keypress(function(e) {
     const pattern = visuals[`${e.charCode}`];
-    // console.log(e.charCode);
-    audio.src = `audio/${e.charCode}.wav`;
-    audio.play();
-    pattern.element.removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);
-    setTimeout( () => {
-      pattern.element.removeClass(pattern.animationIn).addClass(pattern.animationOut);
-    }, 1200);
-    setTimeout( () => {
-      pattern.element.addClass('hidden');
-    }, 1900);
-
+    visualise(pattern);
   });
 
 
@@ -118,15 +108,15 @@ $(() => {
 
 
   function playBack() {
-    count = 0;
+
     userSequence = [];
     setTimeout(function () {
-      audio.src = `audio/${programSequence[sequenceIndex].audio}.wav`;
-      audio.play();
-      sequenceIndex++;
+      // audio.src = `audio/${programSequence[sequenceIndex].audio}.wav`;
+      // audio.play();
       if (sequenceIndex < currentRound) {
         playBack();
-        visualise(sequenceIndex);
+        visualise(programSequence[sequenceIndex]);
+        sequenceIndex++;
       } else {
 
         sequenceIndex = 0;
@@ -136,15 +126,17 @@ $(() => {
     }, 1000);
   }
 
-  function visualise (i) {
-    const proPattern = programSequence[i];
-    console.log(proPattern);
-    proPattern.element.removeClass('hidden').addClass(proPattern.animationIn).removeClass(proPattern.animationOut);
+  function visualise (pattern) {
+    // const pattern = visuals[i];
+    audio.src = `audio/${pattern.audio}.wav`;
+    audio.play();
+    const $element = pattern.element.clone();
+    $element.appendTo('main').removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);
     setTimeout( () => {
-      proPattern.element.removeClass(proPattern.animationIn).addClass(proPattern.animationOut);
+      $element.removeClass(pattern.animationIn).addClass(pattern.animationOut);
     }, 1200);
     setTimeout( () => {
-      proPattern.element.addClass('hidden');
+      $element.remove();
     }, 1900);
   }
   //Function pushes key charcodes the user inputs to the userSequence array.
@@ -169,13 +161,13 @@ $(() => {
   // not super sick,couldnt get it stop triggering on every keypress
   // if player passes test +1 is added to round length and playback starts again.
   function compareArrays() {
-    const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i]);
+    const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
     count += 1;
     if ((count === currentRound) && (losses === 0)){
       console.log(theSame);
       if (theSame === true) {
         const rand = Math.floor(Math.random()*8);
-        programSequence.push(sounds[rand]);
+        programSequence.push(visuals[sounds[rand]]);
         userSequence = [];
         count = 0;
         playBack();
