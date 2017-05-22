@@ -40,19 +40,19 @@ $(() => {
     },
     54: {
       element: $('.sixth'),
-      animationIn: 'rotateIn',
+      animationIn: 'fadeInUpBig',
       animationOut: 'fadeOut',
       audio: 54
     },
     55: {
       element: $('.seventh'),
-      animationIn: 'rotateIn',
+      animationIn: 'shake',
       animationOut: 'fadeOut',
       audio: 55
     },
     56: {
       element: $('.eighth'),
-      animationIn: 'rotateIn',
+      animationIn: 'slideInLeft',
       animationOut: 'fadeOut',
       audio: 56
     }
@@ -78,7 +78,7 @@ $(() => {
   //assigns the audio src according to keypress id of keys 1-8.
   $document.keypress(function(e) {
     const pattern = visuals[`${e.charCode}`];
-    console.log(e.charCode);
+    // console.log(e.charCode);
     audio.src = `audio/${e.charCode}.wav`;
     audio.play();
     pattern.element.removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);

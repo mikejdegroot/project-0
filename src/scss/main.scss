@@ -131,6 +131,64 @@ main {
   z-index: -1;
 }
 
+.sixth {
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: 0
+}
+
+
+.line2 {
+    width: 1984px;
+    height: 0px;
+    border-bottom: 20px solid green;
+    -webkit-transform:
+        translateY(20px)
+        translateX(5px)
+        rotate(-26deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+.seventh {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.blockone, .blocktwo, .blockthree {
+  width: 100px;
+  height: 50px;
+  border-radius: 5px;
+  margin: 20px;
+}
+
+.blockone {
+  background-color: FireBrick;
+}
+.blocktwo {
+  background-color: #C7E816;
+}
+.blockthree {
+  background-color: LightGreen;
+}
+
+.eighth {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  position: absolute;
+  top: 200px;
+  left: 150px;
+  background-color: #7505E8;
+}
 
 /* The switch - the box around the slider */
 .switch {
