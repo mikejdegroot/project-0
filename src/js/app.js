@@ -65,7 +65,7 @@ $(() => {
   };
 
   // current round. empty programSequence array,
-  //gets filled x3 at start then is +1 per round 
+  //gets filled x3 at start then is +1 per round
 
 
   let currentRound = 3;
@@ -129,8 +129,6 @@ $(() => {
   function playBack() {
     userSequence = [];
     setTimeout(function () {
-      // audio.src = `audio/${programSequence[sequenceIndex].audio}.wav`;
-      // audio.play();
       if (sequenceIndex < currentRound) {
         playBack();
         visualise(programSequence[sequenceIndex]);
@@ -148,7 +146,6 @@ $(() => {
   }
 
   function visualise (pattern) {
-    // const pattern = visuals[i];
     $feedback.html(currentPlayer);
     audio.src = `audio/${pattern.audio}.wav`;
     audio.play();
@@ -161,12 +158,13 @@ $(() => {
       $element.remove();
     }, 1900);
   }
+
   //Function pushes key charcodes the user inputs to the userSequence array.
   function listen() {
     console.log('listening...');
     $document.keypress(function(e) {
       userSequence.push(e.charCode);
-      console.log(userSequence);
+      // console.log(userSequence);
       compareArrays();
     });
 
