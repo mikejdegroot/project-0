@@ -5,8 +5,12 @@ $(() => {
   const audio = $('audio')[0];
   const $welcome = $('.welcome');
   const $game = $('#game');
-  const sounds = [49,50,51,52,53,54,55,56];
   const $feedback = $('.feedback');
+
+
+  const sounds = [49, 50, 51, 52, 53, 54, 55, 56];
+
+
   const visuals = {
     49: {
       element: $('.first'),
@@ -61,7 +65,12 @@ $(() => {
 
   // current round. empty programSequence array,
   //gets filled x3 at start then (needs to be + 1 or 2 per round)!!!!
+
+
   let currentRound = 3;
+  let currentPlayerNum = currentRound;
+
+
   let programSequence = [];
   let userSequence = [];
   let numCode = null;
@@ -86,13 +95,13 @@ $(() => {
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
-    gameInit();
     $feedback.removeClass('hidden');
     $feedback.html(currentPlayer);
+    setTimeout(gameInit, 3000);
   });
 
   function updatePlayer () {
-    if (currentRound % 2 === 0) {
+    if (currentPlayerNum % 2 === 0) {
       currentPlayer = 'Player 2';
       // console.log(currentRound);
     } else {
@@ -124,9 +133,8 @@ $(() => {
       if (sequenceIndex < currentRound) {
         playBack();
         visualise(programSequence[sequenceIndex]);
-        $feedback.removeClass('hidden');
+        $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
-
         console.log(programSequence[sequenceIndex].audio);
         sequenceIndex++;
       } else {
@@ -179,35 +187,37 @@ $(() => {
     if ((count === currentRound) && (losses === 0)){
       console.log(theSame);
       if (theSame === true) {
-        const rand = Math.floor(Math.random()*8);
+        const rand = (Math.floor(Math.random()*8));
         programSequence.push(visuals[sounds[rand]]);
+        console.log(programSequence);
         userSequence = [];
         count = 0;
-        playBack();
         currentRound += 1;
+        currentPlayerNum += 1;
         updatePlayer();
-        $feedback.html('Pass!');
+        $feedback.html('Pass! - next up ' + currentPlayer);
         $feedback.removeClass('hidden');
+        setTimeout(playBack, 3000);
       } else if (theSame === false) {
-        console.log('sudden death!');
+        userSequence = [];
         count = 0;
         losses += 1;
-        currentRound += 1;
+        currentPlayerNum += 1;
+        setTimeout(playBack, 3000);
         updatePlayer();
-        $feedback.html('Fail! sudden death!!');
+        $feedback.html('Fail! sudden death!! -next up ' + currentPlayer);
         $feedback.removeClass('hidden');
-        playBack();
+
+
 
         //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
       }
     } else if ((count === currentRound) && (losses !== 0)){
       if (theSame === true) {
-        console.log('winner winner!');
-        $feedback.html('Pass!');
+        $feedback.html(currentPlayer + ' Wins!');
         $feedback.removeClass('hidden');
       } else if (theSame === false) {
-        console.log('tie');
-        $feedback.html('Fail ---- TIE!');
+        $feedback.html(currentPlayer + ' Fails!! ---- TIE!');
         $feedback.removeClass('hidden');
       }
     }
