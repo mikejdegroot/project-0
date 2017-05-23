@@ -71,13 +71,7 @@ $(() => {
   let playing = false;
 
 
-  let currentPlayer = 'Player 1'
-
-  if (currentRound % 2 === 0) {
-    currentPlayer = 'Player 2';
-  } else {
-    currentPlayer = 'Player 1';
-  }
+  let currentPlayer = 'player 1';
 
 
   //assigns the audio src according to keypress id of keys 1-8.
@@ -97,6 +91,14 @@ $(() => {
     $feedback.html(currentPlayer);
   });
 
+  function updatePlayer () {
+    if (currentRound % 2 === 0) {
+      currentPlayer = 'Player 2';
+      // console.log(currentRound);
+    } else {
+      currentPlayer = 'Player 1';
+    }
+  }
   //initializes the building of the program array
   function gameInit () {
     for (let i = 0; i < currentRound; i++){
@@ -122,7 +124,9 @@ $(() => {
       if (sequenceIndex < currentRound) {
         playBack();
         visualise(programSequence[sequenceIndex]);
-        $feedback.addClass('hidden');
+        $feedback.removeClass('hidden');
+        $feedback.html(currentPlayer);
+
         console.log(programSequence[sequenceIndex].audio);
         sequenceIndex++;
       } else {
@@ -136,6 +140,7 @@ $(() => {
 
   function visualise (pattern) {
     // const pattern = visuals[i];
+    $feedback.html(currentPlayer);
     audio.src = `audio/${pattern.audio}.wav`;
     audio.play();
     const $element = pattern.element.clone();
@@ -180,6 +185,7 @@ $(() => {
         count = 0;
         playBack();
         currentRound += 1;
+        updatePlayer();
         $feedback.html('Pass!');
         $feedback.removeClass('hidden');
       } else if (theSame === false) {
@@ -187,12 +193,12 @@ $(() => {
         count = 0;
         losses += 1;
         currentRound += 1;
-
-        $feedback.html('Fail!');
+        updatePlayer();
+        $feedback.html('Fail! sudden death!!');
         $feedback.removeClass('hidden');
         playBack();
 
-//this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
+        //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
       }
     } else if ((count === currentRound) && (losses !== 0)){
       if (theSame === true) {
