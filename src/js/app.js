@@ -6,12 +6,12 @@ $(() => {
   const $welcome = $('.welcome');
   const $game = $('#game');
   const sounds = [49,50,51,52,53,54,55,56];
-  // const $49 = $('.first');
+  const $feedback = $('.feedback');
   const visuals = {
     49: {
       element: $('.first'),
       animationIn: 'fadeInDownBig',
-      animationOut: 'fadeOut',
+      animationOut: 'zoomOut',
       audio: 49
     },
     50: {
@@ -29,7 +29,7 @@ $(() => {
     52: {
       element: $('.fourth'),
       animationIn: 'rotateIn',
-      animationOut: 'fadeOut',
+      animationOut: 'rotateOut',
       audio: 52
     },
     53: {
@@ -41,7 +41,7 @@ $(() => {
     54: {
       element: $('.sixth'),
       animationIn: 'fadeInUpBig',
-      animationOut: 'fadeOut',
+      animationOut: 'lightSpeedOut',
       audio: 54
     },
     55: {
@@ -59,10 +59,6 @@ $(() => {
 
   };
 
-
-  // const $divs = $ ['.first', '.second', '.third', '.fourth', '.fifth', '.sixth', '.seventh', '.eighth'];
-
-
   // current round. empty programSequence array,
   //gets filled x3 at start then (needs to be + 1 or 2 per round)!!!!
   let currentRound = 3;
@@ -73,6 +69,15 @@ $(() => {
 
   //Playing yes/ no switch
   let playing = false;
+
+
+  let currentPlayer = 'Player 1'
+
+  if (currentRound % 2 === 0) {
+    currentPlayer = 'Player 2';
+  } else {
+    currentPlayer = 'Player 1';
+  }
 
 
   //assigns the audio src according to keypress id of keys 1-8.
@@ -88,6 +93,8 @@ $(() => {
     $welcome.hide();
     playing = true;
     gameInit();
+    $feedback.removeClass('hidden');
+    $feedback.html(currentPlayer);
   });
 
   //initializes the building of the program array
@@ -108,7 +115,6 @@ $(() => {
 
 
   function playBack() {
-
     userSequence = [];
     setTimeout(function () {
       // audio.src = `audio/${programSequence[sequenceIndex].audio}.wav`;
@@ -116,11 +122,13 @@ $(() => {
       if (sequenceIndex < currentRound) {
         playBack();
         visualise(programSequence[sequenceIndex]);
+        $feedback.addClass('hidden');
+        console.log(programSequence[sequenceIndex].audio);
         sequenceIndex++;
       } else {
 
         sequenceIndex = 0;
-        console.log(programSequence);
+
         return;
       }
     }, 1000);
@@ -172,10 +180,16 @@ $(() => {
         count = 0;
         playBack();
         currentRound += 1;
+        $feedback.html('Pass!');
+        $feedback.removeClass('hidden');
       } else if (theSame === false) {
         console.log('sudden death!');
         count = 0;
         losses += 1;
+        currentRound += 1;
+
+        $feedback.html('Fail!');
+        $feedback.removeClass('hidden');
         playBack();
 
 //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
@@ -183,32 +197,15 @@ $(() => {
     } else if ((count === currentRound) && (losses !== 0)){
       if (theSame === true) {
         console.log('winner winner!');
+        $feedback.html('Pass!');
+        $feedback.removeClass('hidden');
       } else if (theSame === false) {
         console.log('tie');
+        $feedback.html('Fail ---- TIE!');
+        $feedback.removeClass('hidden');
       }
     }
   }
-  // function suddenDeath() {
-  //   const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i]);
-  //   count += 1;
-  //   if ((count === currentRound) && (losses !== 0)){
-  //     console.log(theSame);
-  //     if (theSame === true) {
-  //       console.log('player 2 wins!');
-  //       count = 0;
-  //       currentRound += 1;
-  //       return;
-  //     } else if (theSame === false) {
-  //       console.log('tie');
-  //       count = 0;
-  //
-  //
-  //     }
-  //   }
-  //
-  //
-  //
-  // }
 
 
 });

@@ -41,13 +41,25 @@ main {
   }
 }
 
+.feedback {
+  font-size: 30px;
+  width: 100px;
+  position: absolute;
+  z-index: 1;
+  background-color: red;
+  left: 50%;
+  Top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 
 
 .first {
   width: 300px;
   height: 300px;
   border-radius: 300px;
-  background-color: crimson;
+  background-color: #D00000;
   position: absolute;
   left: 350px;
   top: 130px;
@@ -69,8 +81,8 @@ main {
 #boxOne, #boxTwo, #boxThree {
   width: 300px;
   height: 20px;
-  background-color: DarkSlateGray;
-  margin: 10px;
+  background-color: #3F88C5;
+  margin: 30px;
 }
 
 .trianglewrapper{
@@ -82,7 +94,7 @@ main {
 }
 .third {
 	position: fixed;
-	background-color: orange;
+	background-color: #FFA500;
 	text-align: left;
   top: 100px;
 }
@@ -119,7 +131,7 @@ main {
   height: 20px;
   width: 20px;
   border-radius: 100%;
-  background-color: black;
+  background-color: #1C3144;
   margin: 30px;
 }
 
@@ -142,7 +154,7 @@ main {
 .line2 {
     width: 1984px;
     height: 0px;
-    border-bottom: 20px solid green;
+    border-bottom: 5px solid #A2AEBB;
     -webkit-transform:
         translateY(20px)
         translateX(5px)
@@ -168,17 +180,14 @@ main {
   height: 50px;
   border-radius: 5px;
   margin: 20px;
+  position: absolute;
+
+  -ms-transform: rotate(20deg);
+   -webkit-transform: rotate(20deg);
+   transform: rotate(20deg);
+  background-color: #00A9A5;
 }
 
-.blockone {
-  background-color: FireBrick;
-}
-.blocktwo {
-  background-color: #C7E816;
-}
-.blockthree {
-  background-color: LightGreen;
-}
 
 .eighth {
   width: 70px;
@@ -187,7 +196,7 @@ main {
   position: absolute;
   top: 200px;
   left: 150px;
-  background-color: #7505E8;
+  background-color: #4F0147;
 }
 
 /* The switch - the box around the slider */
