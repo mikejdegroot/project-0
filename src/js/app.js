@@ -8,7 +8,8 @@ $(() => {
   const $playground = $('#playground');
   const $feedback = $('.feedback');
   const $reset = $('.reset');
-  const $endGame = $('.endgame')
+  const $endGame = $('.endgame');
+  const $switch = $('.switch');
 
   const sounds = [49, 50, 51, 52, 53, 54, 55, 56];
 
@@ -88,9 +89,10 @@ $(() => {
 
   //assigns the audio src according to keypress id of keys 1-8.
   $document.keypress(function(e) {
-    if ((playing === true) || (messing === true)) {
-      const pattern = visuals[`${e.charCode}`];
+    const pattern = visuals[e.charCode];
+    if ((playing === true) || (messing === true) && pattern) {
       visualise(pattern);
+      $('.numberDisplay').html(e.key);
     }
   });
 
@@ -161,12 +163,21 @@ $(() => {
     audio.play();
     const $element = pattern.element.clone();
     $element.appendTo('main').removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);
+    $('.numberDisplay').html(pattern);
     setTimeout( () => {
       $element.removeClass(pattern.animationIn).addClass(pattern.animationOut);
     }, 1200);
     setTimeout( () => {
       $element.remove();
     }, 1900);
+
+
+    // const $newdiv = $( '<div id="easy"></div>' );
+    // if ($switch.checked) {
+    //   console.log('switchy checked!!');
+    //   // $newdiv.appendTo('main')
+    // }
+
   }
 
   //Function pushes key charcodes the user inputs to the userSequence array.

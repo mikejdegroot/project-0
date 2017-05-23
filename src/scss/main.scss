@@ -44,8 +44,8 @@ button {
 
 .endgame {
   position: absolute;
-  left: 50%;
-  Top: 60%;
+  left: 80%;
+  Top: 80%;
   transform: translate(-50%, -50%);
 }
 
@@ -54,14 +54,21 @@ button {
   width: 300px;
   position: absolute;
   z-index: 1;
-  background-color: red;
   left: 50%;
   Top: 50%;
   transform: translate(-50%, -50%);
 }
 
+.numberDisplay {
+  position:absolute;
+  font-size: 500px;
+  left: 50%;
+  Top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  color: rgba(0, 0, 0, 0.5);
 
-
+}
 
 .first {
   width: 300px;
