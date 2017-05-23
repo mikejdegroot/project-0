@@ -6,7 +6,8 @@ $(() => {
   const $welcome = $('.welcome');
   const $game = $('#game');
   const $feedback = $('.feedback');
-
+  const $reset = $('.reset');
+  const $endGame = $('.endgame')
 
   const sounds = [49, 50, 51, 52, 53, 54, 55, 56];
 
@@ -64,7 +65,7 @@ $(() => {
   };
 
   // current round. empty programSequence array,
-  //gets filled x3 at start then (needs to be + 1 or 2 per round)!!!!
+  //gets filled x3 at start then is +1 per round 
 
 
   let currentRound = 3;
@@ -216,12 +217,29 @@ $(() => {
       if (theSame === true) {
         $feedback.html(currentPlayer + ' Wins!');
         $feedback.removeClass('hidden');
+        $reset.removeClass('hidden');
       } else if (theSame === false) {
         $feedback.html(currentPlayer + ' Fails!! ---- TIE!');
         $feedback.removeClass('hidden');
+        $endGame.removeClass('hidden');
+
       }
     }
   }
+
+  $endGame.on('click', () => {
+    currentRound = 3;
+    currentPlayerNum = currentRound;
+    programSequence = [];
+    userSequence = [];
+    playing = false;
+    updatePlayer();
+    losses = 0;
+    count = 0;
+    $feedback.html('');
+    $welcome.show();
+    $endGame.addClass('hidden');
+  });
 
 
 });

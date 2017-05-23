@@ -25,12 +25,6 @@ main {
           width: 40px;
           margin: 10px auto;
         }
-        & button {
-          padding: 10px;
-          background-color: lightblue;
-          border-style: solid;
-          width: 90px;
-        }
         & .choice {
           text-align: left;
           width: 50%;
@@ -41,9 +35,23 @@ main {
   }
 }
 
+button {
+  padding: 10px;
+  background-color: lightblue;
+  border-style: solid;
+  width: 90px;
+}
+
+.endgame {
+  position: absolute;
+  left: 50%;
+  Top: 60%;
+  transform: translate(-50%, -50%);
+}
+
 .feedback {
   font-size: 30px;
-  width: 100px;
+  width: 300px;
   position: absolute;
   z-index: 1;
   background-color: red;
