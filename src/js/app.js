@@ -2,7 +2,6 @@ $(() => {
   console.log('JS yo');
 
   const $document = $(document);
-  // const $checkbox = $('checkbox');
   const audio = $('audio')[0];
   const $welcome = $('.welcome');
   const $game = $('#game');
@@ -14,8 +13,6 @@ $(() => {
   const $numberDisplay = $('.numberDisplay')
 
   const sounds = [1, 2, 3, 4, 5, 6, 7, 8];
-
-
   const visuals = {
     1: {
       element: $('.first'),
@@ -80,10 +77,7 @@ $(() => {
   let messing = false;
   let playing = false;
 
-
-
-
- //game button click function- shows current player, switches playing to true and  launches the key listener and the buildgame function.
+  //game button click function- shows current player, switches playing to true and  launches the key listener and the buildgame function.
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
@@ -94,7 +88,7 @@ $(() => {
     setTimeout(gameInit, 3000);
   });
 
-//playground button key listener.
+  //playground button key listener.
   $playground.on('click', () => {
     $welcome.hide();
     messing = true;
@@ -104,9 +98,18 @@ $(() => {
 
   });
 
+  //sets the game board up as it should be at the beginning of round- especially matters after the reset is pressed.
+  function buildGame() {
+    userSequence = [];
+    programSequence = [];
+    currentRound = 3;
+    currentPlayerNum = currentRound;
+    updatePlayer();
+    losses = 0;
+    count = 0;
+  }
 
-  //assigns the audio src according to keypress id of keys 1-8.
-  // function keyListener () {
+  //activates the key listener function when called and attached to the document from the game/playground buttons. then pushes the key code (1-8) down to the visualise function and numberDisplay element(for the easy mode).
   function keyListener(e) {
     if ((playing === true) || (messing === true)) {
       const key = visuals[e.key];
@@ -120,43 +123,15 @@ $(() => {
     }
   }
 
-  //switches playing var to true and initialzes the game :)
-  //hides the welcome div
-
-
-
-  function buildGame() {
-    userSequence = [];
-    programSequence = [];
-  }
-
-
-
+  // activates the hard mode when button is checked, removing the large numbers
   $switch.on('change', () => {
     console.log('checked');
-    hardMode();
+    $numberDisplay.toggleClass('hidden');
+
   });
 
 
-  function hardMode () {
-    $numberDisplay.toggleClass('hidden');
-  }
-
-
-
-
-
-  function updatePlayer () {
-    if (currentPlayerNum % 2 === 0) {
-      currentPlayer = 'Player 2';
-      // console.log(currentRound);
-    } else {
-      currentPlayer = 'Player 1';
-    }
-  }
-
-
-  //
+  //this function takes the keys pushed from the visuals function and translates them into the easymode large numbers on screen
   function easyPlay (key) {
     $numberDisplay.removeClass('hiddener');
     $numberDisplay.html(key);
@@ -165,12 +140,13 @@ $(() => {
   }
 
 
+  //hides the easy nums after the time dictated in the functions above.
   function hideKey() {
     $numberDisplay.addClass('hiddener');
   }
 
 
-  //initializes the building of the program array
+  //initializes the building of the program array, generates a number from 1-8 randomly and *3 to create first array.
   function gameInit () {
     for (let i = 0; i < currentRound; i++){
       const rand = (Math.floor(Math.random()*8));
@@ -181,36 +157,29 @@ $(() => {
   }
 
 
-  // here does there need to be a game add random addition to array OR a way of using the above function just to add one?
+  //allows the sequence to restart after the last round, stopping it from just playing the end number.
 
-  //this plays back the constructed program array
   let sequenceIndex = 0;
 
-
+  //this plays back the constructed program array from start to finish. also hides the current player feedback. and console logs the program seq array for cheating.
   function playBack() {
     userSequence = [];
     setTimeout(function () {
       if (sequenceIndex < currentRound) {
         playBack();
-        // easyPlay(key);
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
-        // console.log(programSequence[sequenceIndex].audio);
+        console.log(programSequence[sequenceIndex].audio);
         sequenceIndex++;
       } else {
         sequenceIndex = 0;
         userSequence = [];
-        return;
       }
     }, 1000);
   }
 
-
-
-
-
-
+  //takes the code pushed down from the keylistener and the playback and translates it to play the audio src and animate the divs at the same time. clones the relevant div and appends it to the body also, allowing for overlaps. then deletes itself after nearly 2 secs.
 
   function visualise (key) {
     audio.src = `src/assets/audio/${key.audio}.wav`;
@@ -227,55 +196,31 @@ $(() => {
 
   }
 
-  //Function pushes key charcodes the user inputs to the userSequence array.
-  // function userPush() {
-  //   // if (playing === true) {
-  //   console.log('listening...');
-  //   // $document.keypress(function(e) {
-  //     userSequence.push(parseInt(e.key));
-  //     // console.log(userSequence);
-  //     compareArrays();
-  //   });
-
-  // }
-
-  // listen();
 
   let losses = 0;
   let count  = 0;
 
-
-
   // compares the two arrays when the length matches the current round.
-  // not super sick,couldnt get it stop triggering on every keypress
   // if player passes test +1 is added to round length and playback starts again.
+
   function compareArrays() {
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
     count += 1;
     if ((count === currentRound) && (losses === 0) && (messing !== true) && (playing === true)) {
       console.log(theSame);
       if (theSame === true) {
-        const rand = (Math.floor(Math.random()*8));
-        programSequence.push(visuals[sounds[rand]]);
-        // console.log(programSequence);
-        userSequence = [];
-        count = 0;
         currentRound += 1;
-        currentPlayerNum += 1;
-        updatePlayer();
+        roundAddMath();
+        roundReset();
         $feedback.html('Pass! - next up ' + currentPlayer);
         $feedback.removeClass('hidden');
         setTimeout(playBack, 3000);
       } else if ((theSame === false) && (messing !== true)) {
-        userSequence = [];
-        count = 0;
         losses += 1;
-        currentPlayerNum += 1;
+        roundReset();
         setTimeout(playBack, 3000);
-        updatePlayer();
         $feedback.html('Fail! sudden death!! -next up ' + currentPlayer);
         $feedback.removeClass('hidden');
-
 
 
         //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
@@ -294,15 +239,33 @@ $(() => {
     }
   }
 
-  $endGame.on('click', () => {
-    currentRound = 3;
-    currentPlayerNum = currentRound;
-    programSequence = [];
+  //function is called from the compare arrays function and ups the program array by 1 randomly generated number.
+  function roundAddMath () {
+    const rand = (Math.floor(Math.random()*8));
+    programSequence.push(visuals[sounds[rand]]);
+  }
+
+
+  // this resets the round after a first time win or fail, allowing for the current player to change but not the round number for sudden death.
+  function roundReset () {
     userSequence = [];
+    count = 0;
+    currentPlayerNum += 1;
+    updatePlayer();
+  }
+
+  //updates the current player as the rounds increase- has to be current player num due to the current player needing to update independently from the current round for the sudden death round
+  function updatePlayer () {
+    if (currentPlayerNum % 2 === 0) {
+      currentPlayer = 'Player 2';
+    } else {
+      currentPlayer = 'Player 1';
+    }
+  }
+  
+  $endGame.on('click', () => {
     playing = false;
     messing = false;
-    // console.log(playing);
-    updatePlayer();
     losses = 0;
     count = 0;
     $feedback.html('');
@@ -313,3 +276,8 @@ $(() => {
 
 
 });
+
+
+
+//to do - make the key listen only work once the key has played back
+//massively reduce the compare arrays function, maybe move add math out.
