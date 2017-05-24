@@ -84,7 +84,7 @@ $(() => {
     $feedback.removeClass('hidden');
     $feedback.html(currentPlayer);
     buildGame();
-    $document.keypress(keyListener);
+    // $document.keypress(keyListener);
     setTimeout(gameInit, 3000);
   });
 
@@ -175,6 +175,7 @@ $(() => {
       } else {
         sequenceIndex = 0;
         userSequence = [];
+        $document.keypress(keyListener);
       }
     }, 1000);
   }
@@ -214,10 +215,12 @@ $(() => {
         roundReset();
         $feedback.html('Pass! - next up ' + currentPlayer);
         $feedback.removeClass('hidden');
+        $document.unbind('keypress', keyListener);
         setTimeout(playBack, 3000);
       } else if ((theSame === false) && (messing !== true)) {
         losses += 1;
         roundReset();
+        $document.unbind('keypress', keyListener);
         setTimeout(playBack, 3000);
         $feedback.html('Fail! sudden death!! -next up ' + currentPlayer);
         $feedback.removeClass('hidden');
@@ -262,7 +265,7 @@ $(() => {
       currentPlayer = 'Player 1';
     }
   }
-  
+
   $endGame.on('click', () => {
     playing = false;
     messing = false;
