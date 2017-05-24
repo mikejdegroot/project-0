@@ -10,6 +10,7 @@ $(() => {
   const $reset = $('.reset');
   const $endGame = $('.endgame');
   const $switch = $('.switch');
+  const $numberDisplay = $('.numberDisplay')
 
   const sounds = [49, 50, 51, 52, 53, 54, 55, 56];
 
@@ -92,7 +93,9 @@ $(() => {
     const pattern = visuals[e.charCode];
     if ((playing === true) || (messing === true) && pattern) {
       visualise(pattern);
-      $('.numberDisplay').html(e.key);
+      $numberDisplay.removeClass('hiddener');
+      $numberDisplay.html(e.key);
+      setTimeout(hideKey, 500);
     }
   });
 
@@ -121,6 +124,12 @@ $(() => {
       currentPlayer = 'Player 1';
     }
   }
+
+  function hideKey() {
+    $numberDisplay.addClass('hiddener');
+  }
+
+
   //initializes the building of the program array
   function gameInit () {
     for (let i = 0; i < currentRound; i++){
@@ -159,11 +168,11 @@ $(() => {
 
   function visualise (pattern) {
     // $feedback.html(currentPlayer);
-    audio.src = `audio/${pattern.audio}.wav`;
+    audio.src = `src/assets/audio/${pattern.audio}.wav`;
     audio.play();
     const $element = pattern.element.clone();
     $element.appendTo('main').removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);
-    $('.numberDisplay').html(pattern);
+    $numberDisplay.html(pattern.key);
     setTimeout( () => {
       $element.removeClass(pattern.animationIn).addClass(pattern.animationOut);
     }, 1200);
