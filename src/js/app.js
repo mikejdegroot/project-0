@@ -111,7 +111,7 @@ $(() => {
 
   //activates the key listener function when called and attached to the document from the game/playground buttons. then pushes the key code (1-8) down to the visualise function and numberDisplay element(for the easy mode).
   function keyListener(e) {
-    if ((playing === true) || (messing === true)) {
+    if ((playing || messing) && visuals[e.key]) {
       const key = visuals[e.key];
       const skey = e.key;
       visualise(key);
@@ -209,7 +209,7 @@ $(() => {
     count += 1;
     if ((count === currentRound) && (losses === 0) && (messing !== true) && (playing === true)) {
       console.log(theSame);
-      if (theSame === true) {
+      if (theSame) {
         currentRound += 1;
         roundAddMath();
         roundReset();
@@ -217,7 +217,7 @@ $(() => {
         $feedback.removeClass('hidden');
         $document.unbind('keypress', keyListener);
         setTimeout(playBack, 3000);
-      } else if ((theSame === false) && (messing !== true)) {
+      } else if (!theSame && !messing) {
         losses += 1;
         roundReset();
         $document.unbind('keypress', keyListener);
@@ -228,12 +228,12 @@ $(() => {
 
         //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
       }
-    } else if ((count === currentRound) && (losses !== 0) && (messing !== true)){
+    } else if (count === currentRound && losses !== 0 && !messing){
       if (theSame === true) {
         $feedback.html(currentPlayer + ' Wins!');
         $feedback.removeClass('hidden');
         $endGame.removeClass('hidden');
-      } else if ((theSame === false) && (messing !== true)) {
+      } else if (!theSame && !messing) {
         $feedback.html(currentPlayer + ' Fails!! ---- TIE!');
         $feedback.removeClass('hidden');
         $endGame.removeClass('hidden');
