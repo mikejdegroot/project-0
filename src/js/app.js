@@ -81,8 +81,6 @@ $(() => {
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
-    $feedback.removeClass('hidden');
-    $feedback.html(currentPlayer);
     buildGame();
     // $document.keypress(keyListener);
     setTimeout(gameInit, 3000);
@@ -107,6 +105,9 @@ $(() => {
     updatePlayer();
     losses = 0;
     count = 0;
+    // currentPlayer = 'Player 1';
+    $feedback.removeClass('hidden');
+    $feedback.html(currentPlayer);
   }
 
   //activates the key listener function when called and attached to the document from the game/playground buttons. then pushes the key code (1-8) down to the visualise function and numberDisplay element(for the easy mode).
