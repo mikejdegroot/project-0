@@ -2,6 +2,7 @@ $(() => {
   console.log('JS yo');
 
   const $document = $(document);
+  // const $checkbox = $('checkbox');
   const audio = $('audio')[0];
   const $welcome = $('.welcome');
   const $game = $('#game');
@@ -88,34 +89,67 @@ $(() => {
   let currentPlayer = 'player 1';
 
 
-  //assigns the audio src according to keypress id of keys 1-8.
-  $document.keypress(function(e) {
-    const key = visuals[e.key];
-    if ((playing === true) || (messing === true) && key) {
-      const skey = e.key;
-      visualise(key);
-      $numberDisplay.removeClass('hiddener');
-      $numberDisplay.html(skey);
-      setTimeout(hideKey, 500);
-    }
-  });
-
-
-  //switches playing var to true and initialzes the game :)
-  //hides the welcome div
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
     $feedback.removeClass('hidden');
     $feedback.html(currentPlayer);
+    buildGame();
+    keyListener();
     setTimeout(gameInit, 3000);
   });
+
 
   $playground.on('click', () => {
     $welcome.hide();
     messing = true;
     $endGame.removeClass('hidden');
+    buildGame();
+    keyListener();
+
   });
+
+
+  //assigns the audio src according to keypress id of keys 1-8.
+  function keyListener () {
+    $document.keypress(function(e) {
+      const key = visuals[e.key];
+      if ((playing === true) || (messing === true) && key) {
+        const skey = e.key;
+        visualise(key);
+        $numberDisplay.removeClass('hiddener');
+        $numberDisplay.html(skey);
+        setTimeout(hideKey, 500);
+      }
+    });
+  }
+
+  //switches playing var to true and initialzes the game :)
+  //hides the welcome div
+
+
+
+  function buildGame() {
+    userSequence = [];
+    programSequence = [];
+    listen();
+  }
+
+
+
+  $switch.on('change', () => {
+    console.log('checked');
+    hardMode();
+  });
+
+
+  function hardMode () {
+    $numberDisplay.toggleClass('hidden');
+  }
+
+
+
+
 
   function updatePlayer () {
     if (currentPlayerNum % 2 === 0) {
@@ -128,31 +162,12 @@ $(() => {
 
 
   //
-  function easyMode (key) {
+  function easyPlay (key) {
     $numberDisplay.removeClass('hiddener');
     $numberDisplay.html(key);
     setTimeout(hideKey, 500);
 
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   function hideKey() {
@@ -182,7 +197,7 @@ $(() => {
     setTimeout(function () {
       if (sequenceIndex < currentRound) {
         playBack();
-        // easyMode(key);
+        // easyPlay(key);
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
@@ -190,9 +205,8 @@ $(() => {
         console.log(userSequence);
         sequenceIndex++;
       } else {
-
         sequenceIndex = 0;
-
+        userSequence = [];
         return;
       }
     }, 1000);
@@ -201,9 +215,9 @@ $(() => {
   function visualise (key) {
     audio.src = `src/assets/audio/${key.audio}.wav`;
     audio.play();
-    easyMode(key.audio);
+    easyPlay(key.audio);
     // console.log('thistha ' + key);
-    // easyMode(programSequence[sequenceIndex]);
+    // easyPlay(programSequence[sequenceIndex]);
     const $element = key.element.clone();
     $element.appendTo('main').removeClass('hidden').addClass(key.animationIn).removeClass(key.animationOut);
     setTimeout( () => {
@@ -234,8 +248,6 @@ $(() => {
 
   }
 
-  listen();
-
   let losses = 0;
   let count  = 0;
 
@@ -246,15 +258,14 @@ $(() => {
   // if player passes test +1 is added to round length and playback starts again.
   function compareArrays() {
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
-    console.log('userSequence', userSequence);
-    console.log('programSequence', programSequence);
+    console.log('checking');
     count += 1;
-    if ((count === currentRound) && (losses === 0) && (messing !== true)) {
+    if ((count === currentRound) && (losses === 0) && (messing !== true) && (playing === true)) {
       console.log(theSame);
       if (theSame === true) {
         const rand = (Math.floor(Math.random()*8));
         programSequence.push(visuals[sounds[rand]]);
-        console.log(programSequence);
+        // console.log(programSequence);
         userSequence = [];
         count = 0;
         currentRound += 1;
