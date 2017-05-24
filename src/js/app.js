@@ -12,57 +12,57 @@ $(() => {
   const $switch = $('.switch');
   const $numberDisplay = $('.numberDisplay')
 
-  const sounds = [49, 50, 51, 52, 53, 54, 55, 56];
+  const sounds = [1, 2, 3, 4, 5, 6, 7, 8];
 
 
   const visuals = {
-    49: {
+    1: {
       element: $('.first'),
       animationIn: 'fadeInDownBig',
       animationOut: 'zoomOut',
-      audio: 49
+      audio: 1
     },
-    50: {
+    2: {
       element: $('.second'),
       animationIn: 'zoomIn',
       animationOut: 'fadeOut',
-      audio: 50
+      audio: 2
     },
-    51: {
+    3: {
       element: $('.third'),
       animationIn: 'flash',
       animationOut: 'fadeOut',
-      audio: 51
+      audio: 3
     },
-    52: {
+    4: {
       element: $('.fourth'),
       animationIn: 'rotateIn',
       animationOut: 'rotateOut',
-      audio: 52
+      audio: 4
     },
-    53: {
+    5: {
       element: $('.fifth'),
       animationIn: 'flashtwo',
       animationOut: 'fadeOut',
-      audio: 53
+      audio: 5
     },
-    54: {
+    6: {
       element: $('.sixth'),
       animationIn: 'fadeInUpBig',
       animationOut: 'lightSpeedOut',
-      audio: 54
+      audio: 6
     },
-    55: {
+    7: {
       element: $('.seventh'),
       animationIn: 'shake',
       animationOut: 'fadeOut',
-      audio: 55
+      audio: 7
     },
-    56: {
+    8: {
       element: $('.eighth'),
       animationIn: 'slideInLeft',
       animationOut: 'fadeOut',
-      audio: 56
+      audio: 8
     }
 
   };
@@ -90,11 +90,12 @@ $(() => {
 
   //assigns the audio src according to keypress id of keys 1-8.
   $document.keypress(function(e) {
-    const pattern = visuals[e.charCode];
-    if ((playing === true) || (messing === true) && pattern) {
-      visualise(pattern);
+    const key = visuals[e.key];
+    if ((playing === true) || (messing === true) && key) {
+      const skey = e.key;
+      visualise(key);
       $numberDisplay.removeClass('hiddener');
-      $numberDisplay.html(e.key);
+      $numberDisplay.html(skey);
       setTimeout(hideKey, 500);
     }
   });
@@ -125,6 +126,35 @@ $(() => {
     }
   }
 
+
+  //
+  function easyMode (key) {
+    $numberDisplay.removeClass('hiddener');
+    $numberDisplay.html(key);
+    setTimeout(hideKey, 500);
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   function hideKey() {
     $numberDisplay.addClass('hiddener');
   }
@@ -152,10 +182,12 @@ $(() => {
     setTimeout(function () {
       if (sequenceIndex < currentRound) {
         playBack();
+        // easyMode(key);
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
         console.log(programSequence[sequenceIndex].audio);
+        console.log(userSequence);
         sequenceIndex++;
       } else {
 
@@ -166,15 +198,16 @@ $(() => {
     }, 1000);
   }
 
-  function visualise (pattern) {
-    // $feedback.html(currentPlayer);
-    audio.src = `src/assets/audio/${pattern.audio}.wav`;
+  function visualise (key) {
+    audio.src = `src/assets/audio/${key.audio}.wav`;
     audio.play();
-    const $element = pattern.element.clone();
-    $element.appendTo('main').removeClass('hidden').addClass(pattern.animationIn).removeClass(pattern.animationOut);
-    $numberDisplay.html(pattern.key);
+    easyMode(key.audio);
+    // console.log('thistha ' + key);
+    // easyMode(programSequence[sequenceIndex]);
+    const $element = key.element.clone();
+    $element.appendTo('main').removeClass('hidden').addClass(key.animationIn).removeClass(key.animationOut);
     setTimeout( () => {
-      $element.removeClass(pattern.animationIn).addClass(pattern.animationOut);
+      $element.removeClass(key.animationIn).addClass(key.animationOut);
     }, 1200);
     setTimeout( () => {
       $element.remove();
@@ -194,7 +227,7 @@ $(() => {
     // if (playing === true) {
     console.log('listening...');
     $document.keypress(function(e) {
-      userSequence.push(e.charCode);
+      userSequence.push(parseInt(e.key));
       // console.log(userSequence);
       compareArrays();
     });
@@ -213,6 +246,8 @@ $(() => {
   // if player passes test +1 is added to round length and playback starts again.
   function compareArrays() {
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
+    console.log('userSequence', userSequence);
+    console.log('programSequence', programSequence);
     count += 1;
     if ((count === currentRound) && (losses === 0) && (messing !== true)) {
       console.log(theSame);
