@@ -70,58 +70,54 @@ $(() => {
 
   // current round. empty programSequence array,
   //gets filled x3 at start then is +1 per round
-
-
   let currentRound = 3;
   let currentPlayerNum = currentRound;
-
-
   let programSequence = [];
   let userSequence = [];
-  let numCode = null;
+  let currentPlayer = 'player 1';
 
-
-  //Playing yes/ no switch
+  //Playing/messing mode vars for game or playground
   let messing = false;
   let playing = false;
 
 
-  let currentPlayer = 'player 1';
 
 
+ //game button click function- shows current player, switches playing to true and  launches the key listener and the buildgame function.
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
     $feedback.removeClass('hidden');
     $feedback.html(currentPlayer);
     buildGame();
-    keyListener();
+    $document.keypress(keyListener);
     setTimeout(gameInit, 3000);
   });
 
-
+//playground button key listener.
   $playground.on('click', () => {
     $welcome.hide();
     messing = true;
     $endGame.removeClass('hidden');
     buildGame();
-    keyListener();
+    $document.keypress(keyListener);
 
   });
 
 
   //assigns the audio src according to keypress id of keys 1-8.
-  function keyListener () {
-    $document.keypress(function(e) {
+  // function keyListener () {
+  function keyListener(e) {
+    if ((playing === true) || (messing === true)) {
       const key = visuals[e.key];
-      if ((playing === true) || (messing === true) && key) {
-        const skey = e.key;
-        visualise(key);
-        $numberDisplay.removeClass('hiddener');
-        $numberDisplay.html(skey);
-        setTimeout(hideKey, 500);
-      }
-    });
+      const skey = e.key;
+      visualise(key);
+      userSequence.push(parseInt(e.key));
+      $numberDisplay.removeClass('hiddener');
+      $numberDisplay.html(skey);
+      setTimeout(hideKey, 500);
+      compareArrays();
+    }
   }
 
   //switches playing var to true and initialzes the game :)
@@ -132,7 +128,6 @@ $(() => {
   function buildGame() {
     userSequence = [];
     programSequence = [];
-    listen();
   }
 
 
@@ -201,8 +196,7 @@ $(() => {
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
-        console.log(programSequence[sequenceIndex].audio);
-        console.log(userSequence);
+        // console.log(programSequence[sequenceIndex].audio);
         sequenceIndex++;
       } else {
         sequenceIndex = 0;
@@ -212,12 +206,16 @@ $(() => {
     }, 1000);
   }
 
+
+
+
+
+
+
   function visualise (key) {
     audio.src = `src/assets/audio/${key.audio}.wav`;
     audio.play();
     easyPlay(key.audio);
-    // console.log('thistha ' + key);
-    // easyPlay(programSequence[sequenceIndex]);
     const $element = key.element.clone();
     $element.appendTo('main').removeClass('hidden').addClass(key.animationIn).removeClass(key.animationOut);
     setTimeout( () => {
@@ -227,26 +225,21 @@ $(() => {
       $element.remove();
     }, 1900);
 
-
-    // const $newdiv = $( '<div id="easy"></div>' );
-    // if ($switch.checked) {
-    //   console.log('switchy checked!!');
-    //   // $newdiv.appendTo('main')
-    // }
-
   }
 
   //Function pushes key charcodes the user inputs to the userSequence array.
-  function listen() {
-    // if (playing === true) {
-    console.log('listening...');
-    $document.keypress(function(e) {
-      userSequence.push(parseInt(e.key));
-      // console.log(userSequence);
-      compareArrays();
-    });
+  // function userPush() {
+  //   // if (playing === true) {
+  //   console.log('listening...');
+  //   // $document.keypress(function(e) {
+  //     userSequence.push(parseInt(e.key));
+  //     // console.log(userSequence);
+  //     compareArrays();
+  //   });
 
-  }
+  // }
+
+  // listen();
 
   let losses = 0;
   let count  = 0;
@@ -258,7 +251,6 @@ $(() => {
   // if player passes test +1 is added to round length and playback starts again.
   function compareArrays() {
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
-    console.log('checking');
     count += 1;
     if ((count === currentRound) && (losses === 0) && (messing !== true) && (playing === true)) {
       console.log(theSame);
@@ -309,12 +301,14 @@ $(() => {
     userSequence = [];
     playing = false;
     messing = false;
+    // console.log(playing);
     updatePlayer();
     losses = 0;
     count = 0;
     $feedback.html('');
     $welcome.show();
     $endGame.addClass('hidden');
+    $document.unbind('keypress', keyListener);
   });
 
 
