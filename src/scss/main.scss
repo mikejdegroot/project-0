@@ -3,7 +3,7 @@
   text-align: center;
   margin: 0 auto;
 
-}
+
 
   body {
     background: Gainsboro;
@@ -32,6 +32,7 @@
               float: right
             }
       }
+
       button {
         padding: 10px;
         background-color: lightblue;
@@ -48,91 +49,97 @@
         left: 350px;
         top: 130px;
       }
-        .second {
-          width: 320px;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+
+      .second {
+        width: 320px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .trianglewrapper {
+        width: 320px;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+        .third {
+        	position: fixed;
+        	background-color: #FFA500;
+        	text-align: left;
+          top: 100px;
         }
-          .trianglewrapper {
-            width: 320px;
-            position: relative;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        .third:before,
+          .third:after {
+          	content: '';
+          	position: absolute;
+          	background-color: inherit;
           }
-            .third {
-            	position: fixed;
-            	background-color: #FFA500;
-            	text-align: left;
-              top: 100px;
+
+        .third,
+          .third:before,
+            .third:after {
+            	width:  10em;
+            	height: 10em;
+            	border-top-right-radius: 30%;
             }
-              .third:before,
-                .third:after {
-                	content: '';
-                	position: absolute;
-                	background-color: inherit;
-                }
-                  .third,
-                    .third:before,
-                      .third:after {
-                      	width:  10em;
-                      	height: 10em;
-                      	border-top-right-radius: 30%;
-                      }
 
-                      .third {
-                      	transform: rotate(-60deg) skewX(-30deg) scale(1,.866);
-                      }
-                        .third:before {
-                        	transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
-                        }
-                          .third:after {
-                          	transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
-                          }
-
-                          .fourth {
-                            position: absolute;
-                            left: 100px;
-                          }
-
-                          .dot {
-                            height: 20px;
-                            width: 20px;
-                            border-radius: 100%;
-                            background-color: #1C3144;
-                            margin: 30px;
-                          }
-
-                          .fifth {
-                            width: 960px;
-                            height: 960px;
-                            background-color: white;
-                            position: absolute;
-                            z-index: -1;
-                          }
-
-                          .sixth {
-                              width: 0;
-                              height: 0;
-                              padding: 0;
-                              margin: 0
-                          }
-
-
-        .line2 {
-            width: 1984px;
-            height: 0px;
-            border-bottom: 5px solid #A2AEBB;
-            -webkit-transform:
-                translateY(20px)
-                translateX(5px)
-                rotate(-26deg);
-            position: absolute;
-            top: 0;
-            left: 0;
+        .third {
+        	transform: rotate(-60deg) skewX(-30deg) scale(1,.866);
         }
+
+          .third:before {
+          	transform: rotate(-135deg) skewX(-45deg) scale(1.414,.707) translate(0,-50%);
+          }
+          .third:after {
+          	transform: rotate(135deg) skewY(-45deg) scale(.707,1.414) translate(50%);
+          }
+
+        .fourth {
+          position: absolute;
+          left: 100px;
+        }
+
+          .dot {
+            height: 20px;
+            width: 20px;
+            border-radius: 100%;
+            background-color: #1C3144;
+            margin: 30px;
+          }
+
+        .fifth {
+          width: 960px;
+          height: 960px;
+          background-color: white;
+          position: absolute;
+          z-index: -1;
+        }
+
+        .sixth {
+            width: 0;
+            height: 0;
+            padding: 0;
+            margin: 0
+        }
+
+
+          .line2 {
+              width: 1984px;
+              height: 0px;
+              border-bottom: 5px solid #A2AEBB;
+              -webkit-transform:
+                  translateY(20px)
+                  translateX(5px)
+                  rotate(-26deg);
+              position: absolute;
+              top: 0;
+              left: 0;
+          }
 
 
         .seventh {
@@ -143,12 +150,12 @@
           left: 50%;
           transform: translate(-50%, -50%);
         }
-        #boxOne, #boxTwo, #boxThree {
-          width: 300px;
-          height: 20px;
-          background-color: #3F88C5;
-          margin: 30px;
-        }
+            #boxOne, #boxTwo, #boxThree {
+              width: 300px;
+              height: 20px;
+              background-color: #3F88C5;
+              margin: 30px;
+            }
 
         .blockone, .blocktwo, .blockthree {
           width: 100px;
@@ -175,95 +182,96 @@
         }
 
 
-        // everything below is the switch slider for the mode change
-        /* The switch - the box around the slider */
-        .switch {
-          position: relative;
-          display: block;
-          width: 40px;
-          height: 24px;
-        }
-
-        /* Hide default HTML checkbox */
-        .switch input {display:none;}
-
-        /* The slider */
-        .slider {
-          position: absolute;
-          cursor: pointer;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-color: #ccc;
-          -webkit-transition: .4s;
-          transition: .4s;
-        }
-
-        .slider:before {
-          position: absolute;
-          content: "";
-          height: 16px;
-          width: 16px;
-          left: 4px;
-          bottom: 4px;
-          background-color: white;
-          -webkit-transition: .3s;
-          transition: .3s;
-        }
-
-        input:checked + .slider {
-          background-color: #2196F3;
-        }
-
-        input:focus + .slider {
-          box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked + .slider:before {
-          -webkit-transform: translateX(16px);
-          -ms-transform: translateX(16px);
-          transform: translateX(16px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-          border-radius: 34px;
-        }
-
-        .slider.round:before {
-          border-radius: 50%;
-        }
-        .endgame {
-          position: absolute;
-          left: 80%;
-          Top: 80%;
-          transform: translate(-50%, -50%);
-        }
-        .numberDisplay {
-          position:absolute;
-          font-size: 500px;
-          left: 50%;
-          Top: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 2;
-          color: rgba(0, 0, 0, 0.5);
-        }
-        .feedback {
-          font-size: 30px;
-          width: 300px;
-          position: absolute;
-          z-index: 1;
-          left: 50%;
-          Top: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .hidden {
-          display: none;
-        }
-        .hiddener {
-          display: none;
-        }
-
+      // everything below is the switch slider for the mode change
+      /* The switch - the box around the slider */
+      .switch {
+        position: relative;
+        display: block;
+        width: 40px;
+        height: 24px;
       }
+
+      /* Hide default HTML checkbox */
+      .switch input {display:none;}
+
+      /* The slider */
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .3s;
+        transition: .3s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(16px);
+        -ms-transform: translateX(16px);
+        transform: translateX(16px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+      .endgame {
+        position: absolute;
+        left: 80%;
+        Top: 80%;
+        transform: translate(-50%, -50%);
+      }
+      .numberDisplay {
+        position:absolute;
+        font-size: 500px;
+        left: 50%;
+        Top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        color: rgba(0, 0, 0, 0.5);
+      }
+      .feedback {
+        font-size: 30px;
+        width: 300px;
+        position: absolute;
+        z-index: 1;
+        left: 50%;
+        Top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .hidden {
+        display: none;
+      }
+      .hiddener {
+        display: none;
+      }
+
     }
+  }
+}

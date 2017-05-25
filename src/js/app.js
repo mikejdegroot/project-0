@@ -82,7 +82,8 @@ $(() => {
     $welcome.hide();
     playing = true;
     buildGame();
-    // $document.keypress(keyListener);
+    $feedback.removeClass('hidden');
+    $feedback.html(currentPlayer);
     setTimeout(gameInit, 3000);
   });
 
@@ -105,9 +106,7 @@ $(() => {
     updatePlayer();
     losses = 0;
     count = 0;
-    // currentPlayer = 'Player 1';
-    $feedback.removeClass('hidden');
-    $feedback.html(currentPlayer);
+    currentPlayer = 'Player 1';
   }
 
   //activates the key listener function when called and attached to the document from the game/playground buttons. then pushes the key code (1-8) down to the visualise function and numberDisplay element(for the easy mode).
@@ -153,7 +152,6 @@ $(() => {
       const rand = (Math.floor(Math.random()*8));
       programSequence.push(visuals[sounds[rand]]);
     }
-    console.log('initializing!');
     playBack();
   }
 
@@ -164,18 +162,16 @@ $(() => {
 
   //this plays back the constructed program array from start to finish. also hides the current player feedback. and console logs the program seq array for cheating.
   function playBack() {
-    userSequence = [];
     setTimeout(function () {
       if (sequenceIndex < currentRound) {
-        playBack();
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
         console.log(programSequence[sequenceIndex].audio);
+        playBack();
         sequenceIndex++;
       } else {
         sequenceIndex = 0;
-        userSequence = [];
         $document.keypress(keyListener);
       }
     }, 1000);
