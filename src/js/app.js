@@ -1,17 +1,14 @@
 $(() => {
   console.log('JS yo');
-
   const $document = $(document);
   const audio = $('audio')[0];
   const $welcome = $('.welcome');
   const $game = $('#game');
   const $playground = $('#playground');
   const $feedback = $('.feedback');
-  const $reset = $('.reset');
   const $endGame = $('.endgame');
   const $switch = $('.switch');
-  const $numberDisplay = $('.numberDisplay')
-
+  const $numberDisplay = $('.numberDisplay');
   const sounds = [1, 2, 3, 4, 5, 6, 7, 8];
   const visuals = {
     1: {
@@ -81,6 +78,7 @@ $(() => {
   $game.on('click', () => {
     $welcome.hide();
     playing = true;
+    messing = false;
     buildGame();
     $feedback.removeClass('hidden');
     $feedback.html(currentPlayer);
@@ -91,6 +89,7 @@ $(() => {
   $playground.on('click', () => {
     $welcome.hide();
     messing = true;
+    playing = false;
     $endGame.removeClass('hidden');
     buildGame();
     $document.keypress(keyListener);
@@ -130,7 +129,6 @@ $(() => {
 
   });
 
-
   //this function takes the keys pushed from the visuals function and translates them into the easymode large numbers on screen
   function easyPlay (key) {
     $numberDisplay.removeClass('hiddener');
@@ -139,12 +137,10 @@ $(() => {
 
   }
 
-
   //hides the easy nums after the time dictated in the functions above.
   function hideKey() {
     $numberDisplay.addClass('hiddener');
   }
-
 
   //initializes the building of the program array, generates a number from 1-8 randomly and *3 to create first array.
   function gameInit () {
@@ -155,9 +151,7 @@ $(() => {
     playBack();
   }
 
-
   //allows the sequence to restart after the last round, stopping it from just playing the end number.
-
   let sequenceIndex = 0;
 
   //this plays back the constructed program array from start to finish. also hides the current player feedback. and console logs the program seq array for cheating.
@@ -167,7 +161,7 @@ $(() => {
         visualise(programSequence[sequenceIndex]);
         $feedback.addClass('hidden');
         $feedback.html(currentPlayer);
-        console.log(programSequence[sequenceIndex].audio);
+        // console.log(programSequence[sequenceIndex].audio);
         playBack();
         sequenceIndex++;
       } else {
@@ -178,7 +172,6 @@ $(() => {
   }
 
   //takes the code pushed down from the keylistener and the playback and translates it to play the audio src and animate the divs at the same time. clones the relevant div and appends it to the body also, allowing for overlaps. then deletes itself after nearly 2 secs.
-
   function visualise (key) {
     audio.src = `src/assets/audio/${key.audio}.wav`;
     audio.play();
@@ -191,20 +184,17 @@ $(() => {
     setTimeout( () => {
       $element.remove();
     }, 1900);
-
   }
-
 
   let losses = 0;
   let count  = 0;
 
   // compares the two arrays when the length matches the current round.
   // if player passes test +1 is added to round length and playback starts again.
-
   function compareArrays() {
     const theSame = userSequence.length === programSequence.length && userSequence.every((v,i) => v === programSequence[i].audio);
     count += 1;
-    if ((count === currentRound) && (losses === 0) && (messing !== true) && (playing === true)) {
+    if ((count === currentRound) && (losses === 0) && (playing)) {
       console.log(theSame);
       if (theSame) {
         currentRound += 1;
@@ -212,25 +202,23 @@ $(() => {
         roundReset();
         $feedback.html('Pass! - next up ' + currentPlayer);
         $feedback.removeClass('hidden');
-        $document.unbind('keypress', keyListener);
+        stopBind();
         setTimeout(playBack, 3000);
-      } else if (!theSame && !messing) {
+      } else if (!theSame) {
         losses += 1;
         roundReset();
-        $document.unbind('keypress', keyListener);
+        stopBind();
         setTimeout(playBack, 3000);
         $feedback.html('Fail! sudden death!! -next up ' + currentPlayer);
         $feedback.removeClass('hidden');
-
-
         //this bottom part of the if else acts as the sudden death calculator portion of the game, works on whether a loss was stored in the 'losses' var.
       }
-    } else if (count === currentRound && losses !== 0 && !messing){
-      if (theSame === true) {
+    } else if ((count === currentRound) && (losses !== 0)){
+      if (theSame) {
         $feedback.html(currentPlayer + ' Wins!');
         $feedback.removeClass('hidden');
         $endGame.removeClass('hidden');
-      } else if (!theSame && !messing) {
+      } else if (!theSame) {
         $feedback.html(currentPlayer + ' Fails!! ---- TIE!');
         $feedback.removeClass('hidden');
         $endGame.removeClass('hidden');
@@ -244,7 +232,6 @@ $(() => {
     const rand = (Math.floor(Math.random()*8));
     programSequence.push(visuals[sounds[rand]]);
   }
-
 
   // this resets the round after a first time win or fail, allowing for the current player to change but not the round number for sudden death.
   function roundReset () {
@@ -263,6 +250,10 @@ $(() => {
     }
   }
 
+  function stopBind () {
+    $document.unbind('keypress', keyListener);
+  }
+
   $endGame.on('click', () => {
     playing = false;
     messing = false;
@@ -271,9 +262,8 @@ $(() => {
     $feedback.html('');
     $welcome.show();
     $endGame.addClass('hidden');
-    $document.unbind('keypress', keyListener);
+    stopBind();
   });
-
 
 });
 
