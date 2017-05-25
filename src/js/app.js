@@ -1,8 +1,10 @@
 $(() => {
   console.log('JS yo');
+
+  const $number = $('.number');
   const $document = $(document);
   const audio = $('audio')[0];
-  const $welcome = $('.welcome');
+  const $splash = $('.splash');
   const $game = $('#game');
   const $playground = $('#playground');
   const $feedback = $('.feedback');
@@ -13,7 +15,7 @@ $(() => {
   const visuals = {
     1: {
       element: $('.first'),
-      animationIn: 'fadeInDownBig',
+      animationIn: 'pulse',
       animationOut: 'zoomOut',
       audio: 1
     },
@@ -43,24 +45,25 @@ $(() => {
     },
     6: {
       element: $('.sixth'),
-      animationIn: 'fadeInUpBig',
+      animationIn: '',
       animationOut: 'lightSpeedOut',
       audio: 6
     },
     7: {
       element: $('.seventh'),
-      animationIn: 'shake',
+      animationIn: '',
       animationOut: 'fadeOut',
       audio: 7
     },
     8: {
       element: $('.eighth'),
-      animationIn: 'slideInLeft',
+      animationIn: 'slideInRight',
       animationOut: 'fadeOut',
       audio: 8
     }
 
   };
+
 
   // current round. empty programSequence array,
   //gets filled x3 at start then is +1 per round
@@ -74,9 +77,12 @@ $(() => {
   let messing = false;
   let playing = false;
 
+  // $number.hide();
+
   //game button click function- shows current player, switches playing to true and  launches the key listener and the buildgame function.
   $game.on('click', () => {
-    $welcome.hide();
+    $splash.hide();
+    $number.removeClass('hidden');
     playing = true;
     messing = false;
     buildGame();
@@ -87,7 +93,8 @@ $(() => {
 
   //playground button key listener.
   $playground.on('click', () => {
-    $welcome.hide();
+    $number.removeClass('hidden');
+    $splash.hide();
     messing = true;
     playing = false;
     $endGame.removeClass('hidden');
@@ -108,13 +115,24 @@ $(() => {
     currentPlayer = 'Player 1';
   }
 
+  const $numbers = $('.number');
+  $numbers.on('click', keyListener);
+
   //activates the key listener function when called and attached to the document from the game/playground buttons. then pushes the key code (1-8) down to the visualise function and numberDisplay element(for the easy mode).
   function keyListener(e) {
-    if ((playing || messing) && visuals[e.key]) {
-      const key = visuals[e.key];
-      const skey = e.key;
+    // check which element fired the function
+    let number = null;
+    if($(e.target).is('button')) {
+      number = $(e.target).html();
+    } else {
+      number = e.key;
+    }
+
+    if ((playing || messing) && visuals[number]) {
+      const key = visuals[number];
+      const skey = number;
       visualise(key);
-      userSequence.push(parseInt(e.key));
+      userSequence.push(parseInt(number));
       $numberDisplay.removeClass('hiddener');
       $numberDisplay.html(skey);
       setTimeout(hideKey, 500);
@@ -259,8 +277,9 @@ $(() => {
     messing = false;
     losses = 0;
     count = 0;
+    $number.addClass('hidden');
     $feedback.html('');
-    $welcome.show();
+    $splash.show();
     $endGame.addClass('hidden');
     stopBind();
   });
