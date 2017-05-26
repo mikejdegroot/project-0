@@ -43,6 +43,8 @@ One of the plroblems faced when putting this project together was writing the an
 Another challenge was writing in the 'Sudden Death' round, a round in which the second player can have an attempt after the first has failed to repeat the sequence corrently. This presented a challenge as the round and current player needed to change, without the difficulty increasing as it would do normally. The solution came in the form of a large if-else statement, with another nested inside it.
 
 ### Improvements
-Though I am proud of the game, in the future I wish to add a bit more functionality to it. A timer on the user rounds would add some more complexity, and perhaps swapping out the CSS animations for some Javascript ones would help with an overall more professional feel. 
+Though I am proud of the game, in the future I wish to add a bit more functionality to it. A timer on the user rounds would add some more complexity, and perhaps swapping out the CSS animations for some Javascript ones would help with an overall more professional feel.
+
+The game experience would also be improved greatly by making the sounds polyphonic- in it's current state one sound is cut off by the next if pressed in quick succession. 
 
 Though the game is reponsive to ipad, more functionality with phone size screens is also needed. 
