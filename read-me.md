@@ -19,10 +19,10 @@ To run the code,
 
 ### The Game
 
-Soundboard is a sound and animation memory game for two players. Sounds and accompanying animations are triggered when the user presses keys 1-9 during the game.
+Soundboard is a multiplayer sound memory game. Trigger sounds and animations to test your memory, playing against the computer and a friend. 
 
 ### How to play- 
-As the game begins, the computer will play a sequence of sounds and animations to match. Player 1 must then repeat the sequence using keys 1-9. The animations are accompanied by large numbers on screen to help the players learn which sound each number corresponds to. 
+As the game begins, the computer will play a sequence of sounds and animations to match. Player 1 must then repeat the sequence using keys 1-8. The animations are accompanied by large numbers on screen to help the players learn which sound each number corresponds to. 
 
 ![](public/assets/screenshot-2.png)
 
