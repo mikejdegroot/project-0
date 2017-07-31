@@ -1,5 +1,10 @@
 #Soundboard
 ##sound based memory game
+
+
+![](public/assets/screenshot-1.png)
+
+
 ### installation and setup
 
 To run the code,
@@ -10,18 +15,27 @@ To run the code,
 * Run Gulp to compile the  Source Code.
 * Note- You will need to have 'gulp -cli' installed globally. 
 
+
+
 ### The Game
 
-Soundboard is a sound and animation based memory game for two players. Sounds and accompanying animations are triggered when the user presses keys 1-9 during the 'game' or 'playground' modes. 
+Soundboard is a sound and animation memory game for two players. Sounds and accompanying animations are triggered when the user presses keys 1-9 during the game.
 
-Game mode- the players wait for a randomly generated sequence of sounds from the computer to be played and must repeat the sequence to progress to the next round, which increases in difficulty. 
+### How to play- 
+As the game begins, the computer will play a sequence of sounds and animations to match. Player 1 must then repeat the sequence using keys 1-9. The animations are accompanied by large numbers on screen to help the players learn which sound each number corresponds to. 
+
+![](public/assets/screenshot-2.png)
+
+If player 1 successfully repeats the sequence, the next round begins and it's player 2's turn. The game progressively becomes more challenging as the rounds increase until there is a player faulters. At which point there is a repeat of the last round for the opposing player to attempt, winning or loosing this 'sudden death' round results in a win or tie respectively.
+
+![](public/assets/screenshot-3.png)
+
 
 Playground mode is a empty space mode, allowing the user to have have fun with the sounds and get used to what each button does.
 
-There is also an 'easy mode' which shows the user the relevant numbers for each sound to play in the correct order.
+There is also a 'hard mode' which removes the number guidance from the screen. 
 
-![screen1](src/assets/screen-shot-1.png)
-![screen1](src/assets/screen-shot-2.png)
+![](public/assets/screenshot-4.png)
 
 
 ### Technologies Used 
@@ -38,13 +52,18 @@ Software languages used-
 
 
 ### Challenges faced
-One of the plroblems faced when putting this project together was writing the animations dynamically enough to retrigger on every keypress. By default, the animation will only play again once it has finished it's first iteration, and any subsequent presses will interupt the first play. The solution was to clone the div element to be animated, append it to the 'main' HTML tag, animate it, and then remove the clone once the animation is complete. 
+One of the plroblems faced when putting this project together was getting the animations to retrigger on every keypress. By default, the animation would only play again once it has finished it's first iteration, and any subsequent presses will interupt the first play. 
 
-Another challenge was writing in the 'Sudden Death' round, a round in which the second player can have an attempt after the first has failed to repeat the sequence corrently. This presented a challenge as the round and current player needed to change, without the difficulty increasing as it would do normally. The solution came in the form of a large if-else statement, with another nested inside it.
+The solution was to clone and then append the element to the main tag, then animate the clone instead of the original element. This allows as many clones as needed to be made and animated on muliutple keypresses, which are then deleted when the animation is finished. 
+
+Another Challenge was making the game mobile compatible. With the lack of keys to press on tablets and phones, I needed a solution to allow mobile users to play. This came in the form of 8 large buttons spread accross the screen with a low opacity setting. This effectively created a target sensitive area which triggered the sounds according to which area of the screen was pressed.
+
+![](public/assets/screenshot-5.png)
+
 
 ### Improvements
-Though I am proud of the game, in the future I wish to add a bit more functionality to it. A timer on the user rounds would add some more complexity, and perhaps swapping out the CSS animations for some Javascript ones would help with an overall more professional feel.
+In the future more functionality could be added to the game to improve the user experience. A timer on the rounds would add some more value and visual feedback, and perhaps swapping out the CSS animations for some Javascript ones would give with an overall more professional feel.
 
-The game experience would also be improved greatly by making the sounds polyphonic- in it's current state one sound is cut off by the next if pressed in quick succession. 
+The game experience would also be improved greatly by making the sounds polyphonic- in it's current state one sound can becut off by the next. Doing so would likely involve assinging an audio tag to each sound, rather than all the sounds sharing one tag, as is currently the case.
 
 Though the game is reponsive to ipad, more functionality with phone size screens is also needed. 
