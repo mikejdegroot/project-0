@@ -11,8 +11,8 @@ To run the code,
 
 * visit the project 0 github repository.
 * Hit 'clone or download'.
-* Using your terminal, run the NPM i comand to install the dependencies needed.
-* Run Gulp to compile the  Source Code.
+* Using your terminal, run the NPM i command to install the dependencies needed.
+* Run Gulp to compile the Source Code.
 * Note- You will need to have 'gulp -cli' installed globally. 
 
 
@@ -26,7 +26,7 @@ As the game begins, the computer will play a sequence of sounds and animations t
 
 ![](public/assets/screenshot-2.png)
 
-If player 1 successfully repeats the sequence, the next round begins and it's player 2's turn. The game progressively becomes more challenging as the rounds increase until there is a player faulters. At which point there is a repeat of the last round for the opposing player to attempt, winning or loosing this 'sudden death' round results in a win or tie respectively.
+If player 1 successfully repeats the sequence, the next round begins and it's player 2's turn. The game progressively becomes more challenging as the rounds increase until a player faulters. At which point there is a repeat of the last round for the opposing player to attempt, winning or loosing this 'sudden death' round results in a win or tie respectively.
 
 ![](public/assets/screenshot-3.png)
 
